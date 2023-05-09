@@ -13,4 +13,9 @@ public interface ProgramRepository extends JpaRepository<Program,Integer> {
     @Query("select p from Program p where (p.programno like concat('%',:searchprogramno,'%') or " +
             "p.name like concat('%',:searchprogramno,'%'))")
     Page<Program> findAll(@Param("searchprogramno") String searchprogramno, Pageable of);
+
+
+
+
+
 }

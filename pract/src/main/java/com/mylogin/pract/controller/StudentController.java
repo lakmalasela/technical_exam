@@ -4,7 +4,10 @@ package com.mylogin.pract.controller;
 import com.mylogin.pract.model.Student;
 import com.mylogin.pract.model.Studenthasprogram;
 import com.mylogin.pract.repository.StudentRepostory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,6 +18,9 @@ import java.util.HashMap;
 @RestController
 @RequestMapping(value = "/student")
 public class StudentController {
+
+
+    private final Logger logger = LoggerFactory.getLogger((StudentController.class));
 
 
     @Autowired
@@ -113,6 +119,16 @@ public class StudentController {
 
 
     }
+
+    //get by student
+    //student/getstudent?id=1
+    @GetMapping(value = "/getstudent",params = {"id"},produces = "application/json")
+    @Cacheable(cacheNames  = "Students ",key = "#id")
+    public Student removeemployeeList(@RequestParam("id") int id){
+        logger.debug("==> StudentController : /student/{} call :",id);
+        return dao.getStudent(id);
+    }
+
 
 
 
